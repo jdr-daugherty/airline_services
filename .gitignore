@@ -1,0 +1,5 @@
+.gitignore.swp
+**/.terraform/**
+**/.terraform.lock.hcl
+**/terraform.tfstate
+**/lambdas/packages/**
