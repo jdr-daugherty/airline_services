@@ -5,7 +5,7 @@ variable "environment" {
 
 variable "namespace" {
   type    = string
-  default = "crew-mob"
+  default = "rothe-mob"
 }
 
 locals {
