@@ -1,8 +1,8 @@
 # TODO: Move lambdas to S3
 
 locals {
-  source_path    = "../lambdas"
-  zip_path       = "../lambdas/packages"
+  source_path    = "lambdas"
+  zip_path       = "lambdas/packages"
   zip_loc_prefix = "${local.zip_path}/${local.service_name}"
 }
 
