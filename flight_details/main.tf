@@ -18,7 +18,7 @@ resource "aws_api_gateway_resource" "flight_details_get_details" {
 resource "aws_api_gateway_method" "flight_details_get_details" {
   rest_api_id   = aws_api_gateway_rest_api.services_gateway.id
   resource_id   = aws_api_gateway_resource.flight_details_get_details.id
-  http_method   = "ANY"
+  http_method   = "GET"
   authorization = "NONE"
 }
 
@@ -42,7 +42,7 @@ resource "aws_api_gateway_resource" "flight_details_get_inbound" {
 resource "aws_api_gateway_method" "flight_details_get_inbound" {
   rest_api_id   = aws_api_gateway_rest_api.services_gateway.id
   resource_id   = aws_api_gateway_resource.flight_details_get_inbound.id
-  http_method   = "ANY"
+  http_method   = "GET"
   authorization = "NONE"
 }
 
