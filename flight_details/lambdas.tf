@@ -50,6 +50,17 @@ resource "aws_lambda_function" "get_details_lambda" {
   filename      = "${local.zip_loc_prefix}-get.zip"
 }
 
+resource "aws_lambda_permission" "api_gateway_get_details_lambda" {
+  statement_id  = "${local.prefix}-api-gateway-get-details-lambda"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.get_details_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = "${aws_api_gateway_rest_api.services_gateway.execution_arn}/*/*"
+}
+
 # Inbound Flight Details
 data "archive_file" "get_inbound_lambda_zip" {
   type        = "zip"
@@ -64,3 +75,15 @@ resource "aws_lambda_function" "get_inbound_lambda" {
   handler       = "lambda_function.lambda_handler"
   filename      = "${local.zip_loc_prefix}-get-inbound.zip"
 }
+
+resource "aws_lambda_permission" "api_gateway_get_inbound_lambda" {
+  statement_id  = "${local.prefix}-api-gateway-get-inbound-lambda"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.get_details_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = "${aws_api_gateway_rest_api.services_gateway.execution_arn}/*/*"
+}
+
