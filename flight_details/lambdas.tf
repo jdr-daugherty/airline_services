@@ -22,7 +22,7 @@ resource "aws_lambda_function" "update_lambda" {
 }
 
 resource "aws_lambda_permission" "sqs_update_permission" {
-  statement_id  = "UpdateFlightDetailsFromRelayQueue"
+  statement_id = "${local.prefix}-update-from-relay-queue"
   principal     = "events.amazonaws.com"
   source_arn    = aws_sqs_queue.flight_details_relay_queue.arn
   action        = "lambda:InvokeFunction"
