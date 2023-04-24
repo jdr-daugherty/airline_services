@@ -9,30 +9,39 @@ resource "aws_api_gateway_rest_api" "services_gateway" {
   name = "${var.namespace}-${var.environment}-gateway"
 }
 
-module "flight_details_resource" {
-  source = "../modules/apigw_lambda_resource"
-
-  rest_api_id        = aws_api_gateway_rest_api.services_gateway.id
-  parent_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
-  http_method        = "GET"
-  invoke_arn         = aws_lambda_function.get_details_lambda.invoke_arn
-  path_part          = "flight-details"
+module "flight_status" {
+  source                 = "./modules/flight_status"
+  api_execution_arn      = aws_api_gateway_rest_api.services_gateway.execution_arn
+  api_id                 = aws_api_gateway_rest_api.services_gateway.id
+  api_parent_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
+  prefix                 = local.prefix
+  source_path            = local.lambda_source_path
+  zip_path               = local.lambda_zip_path
 }
 
-module "inbound_flight_resource" {
-  source = "../modules/apigw_lambda_resource"
+module "inbound_flight" {
+  source                 = "./modules/inbound_flight"
+  api_execution_arn      = aws_api_gateway_rest_api.services_gateway.execution_arn
+  api_id                 = aws_api_gateway_rest_api.services_gateway.id
+  api_parent_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
+  prefix                 = local.prefix
+  source_path            = local.lambda_source_path
+  zip_path               = local.lambda_zip_path
+}
 
-  rest_api_id        = aws_api_gateway_rest_api.services_gateway.id
-  parent_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
-  http_method        = "GET"
-  invoke_arn         = aws_lambda_function.get_inbound_lambda.invoke_arn
-  path_part          = "inbound-flight"
+module "update_flights" {
+  source         = "./modules/update_flights"
+  sqs_queue_arn  = aws_sqs_queue.flight_details_relay_queue.arn
+  table_arn_list = [module.flight_status.table_arn, module.inbound_flight.table_arn]
+  prefix         = local.prefix
+  source_path    = local.lambda_source_path
+  zip_path       = local.lambda_zip_path
 }
 
 resource "aws_api_gateway_deployment" "default_deployment" {
   depends_on = [
-    module.flight_details_resource,
-    module.inbound_flight_resource
+    module.flight_status,
+    module.inbound_flight
   ]
 
   rest_api_id = aws_api_gateway_rest_api.services_gateway.id
