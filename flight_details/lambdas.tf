@@ -79,7 +79,7 @@ resource "aws_lambda_function" "get_inbound_lambda" {
 resource "aws_lambda_permission" "api_gateway_get_inbound_lambda" {
   statement_id  = "${local.prefix}-api-gateway-get-inbound-lambda"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.get_details_lambda.function_name
+  function_name = aws_lambda_function.get_inbound_lambda.function_name
   principal     = "apigateway.amazonaws.com"
 
   # The /*/* portion grants access from any method on any resource
