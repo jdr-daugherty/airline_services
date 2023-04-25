@@ -3,8 +3,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      creator = "john.rothe@daugherty.com"
-      #created_at = formatdate("YYYY-MM-DD", timestamp())
+      creator   = "john.rothe@daugherty.com"
       Terraform = true
     }
   }
