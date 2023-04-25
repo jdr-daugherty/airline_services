@@ -32,19 +32,11 @@ resource "aws_api_gateway_deployment" "default_deployment" {
     create_before_destroy = true
   }
 
-  #  https://registry.terraform.io/providers/hashicorp/aws/3.6.0/docs/resources/api_gateway_deployment#redeployment-triggers
-#  triggers = {
-#    lambdas_and_tables = sha1(
-#      join(" ",
-#        [
-#          module.flight_status.lambda_arn,
-#          module.flight_status.table_arn,
-#          module.inbound_flight.lambda_arn,
-#          module.inbound_flight.table_arn
-#        ]
-#      )
-#    )
-#  }
+  triggers = {
+    # Redeploy the API Gateway any time the set of lambda deployment packages changes.
+    # This can be replaced with the aws_s3_objects data source when necessary.
+    lambda_packages = sha1(join(" ", fileset(local.lambda_zip_path, "*.zip")))
+  }
 }
 
 # The system pushes an update every time a flight is created or modified.
