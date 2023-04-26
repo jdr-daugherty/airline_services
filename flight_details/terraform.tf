@@ -21,9 +21,8 @@ provider "aws" {
 
   default_tags {
     tags = {
-      project_owners = ["john.rothe@daugherty.com"]
-      code_owners    = ["john.rothe@daugherty.com"]
-      deployer       = "Terraform"
+      project_owner = "john.rothe@daugherty.com"
+      deployer      = "Terraform"
     }
   }
 }

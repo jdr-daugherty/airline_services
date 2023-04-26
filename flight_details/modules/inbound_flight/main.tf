@@ -8,6 +8,7 @@ module "lambda_getter" {
   source                 = "../../../modules/lambda_getter"
   execution_role_arn     = module.lambda_getter_role.arn
   lambda_name            = local.lambda_name
+  table_name             = module.table.name
   prefix                 = var.prefix
   rest_api_execution_arn = var.api_execution_arn
   source_path            = var.source_path
