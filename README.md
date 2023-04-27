@@ -7,6 +7,7 @@ TODO:
 - Flight Details
   - Convert into a module
   - Implement lambdas
+- Route 53 DNS
 - Add Other Services as Modules
   - Messages
   - Profiles
