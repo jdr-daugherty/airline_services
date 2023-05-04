@@ -6,9 +6,13 @@ import os
 import signal
 import sys
 
-logger = logging.getLogger()
-client = boto3.resource('dynamodb')
-table = client.Table(os.getenv('DYNAMODB_TABLE'))
+
+__all__ = []
+
+REQUIRED_PARAMS = {'departure_location', 'flight_number', 'departure_date'}
+LOGGER = logging.getLogger()
+CLIENT = boto3.resource('dynamodb')
+TABLE = CLIENT.Table(os.getenv('DYNAMODB_TABLE'))
 
 
 def lambda_handler(event, context):
@@ -24,18 +28,14 @@ def lambda_handler(event, context):
 
 def request_item(key: dict[str, str]) -> dict[str, object]:
     try:
-        return table.get_item(key)
+        return TABLE.get_item(key)
     except BotoCoreError or ClientError as error:
         logging.exception("Failed to retrieve flight details from DynamoDB: %s", key)
         raise error
 
 
 def valid_parameters(parameters: dict[str, str]) -> bool:
-    for r in ['departure_location', 'flight_number', 'departure_date']:
-        if r not in parameters:
-            return False
-
-    return True
+    return REQUIRED_PARAMS.issubset(parameters.keys())
 
 
 def invalid_http_response() -> object:
@@ -46,13 +46,13 @@ def invalid_http_response() -> object:
 
 def to_http_response(key: dict[str, str], dynamodb_response: dict[str, object]) -> object:
     if 'Item' in dynamodb_response:
-        logger.debug("Returning flight details for: %s", key)
+        LOGGER.debug("Returning flight details for: %s", key)
         return {
             "statusCode": 200,
             "body": json.dumps(dynamodb_response['Item'])
         }
     else:
-        logger.debug("Flight details not found for: %s", key)
+        LOGGER.debug("Flight details not found for: %s", key)
         return {
             "statusCode": 404,
             "body": f"Item not found in table {str(key)}"
@@ -72,7 +72,7 @@ def to_key(parameters: dict[str, str]) -> dict[str, str]:
 
 def exit_gracefully(signum: int, frame: object) -> None:
     try:
-        client.close()
+        CLIENT.close()
     finally:
         sys.exit(0)
 
