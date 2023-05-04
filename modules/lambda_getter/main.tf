@@ -16,6 +16,12 @@ resource "aws_lambda_function" "function" {
   runtime       = "python3.9"
   handler       = "lambda_function.lambda_handler"
   filename      = local.zip_file_location
+
+  environment {
+    variables = {
+      DYNAMODB_TABLE = var.table_name
+    }
+  }
 }
 
 resource "aws_lambda_permission" "api_gateway_permission" {
