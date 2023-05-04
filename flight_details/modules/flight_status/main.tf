@@ -39,12 +39,33 @@ resource "aws_dynamodb_table_item" "example" {
 
   item = <<ITEM
 {
-  "key": {"S": "MEM_5420_2022-05-03"},
+  "key": {"S": "MEM_5420_2022-05-18"},
+
+  "createdBy": {"S": ""},
+  "createdTime": {"S": "2022-04-18T18:54:21.762Z"},
+
   "number": {"N": "5420"},
+
   "departureDate": {"S": "2022-05-03"},
+
   "departureStationCode": {"S": "MEM"},
-  "originalDepartureTime": {"S": "2022-05-03T18:54:21.762Z"},
-  "four": {"N": "44444"}
+  "departureStationTimeZone": {"S": "America/Chicago"},
+  "originalArrivalTime": {"S": "2022-05-18T20:29:40.131Z"}
+  "currentDepartureTime": {"S": "2022-05-03T18:54:21.762Z"}
+  "outboundStatus": {"S": "On Time"}
+  "departureGate": {"S": "B3"}
+
+  "arrivalStationCode": {"S": "DAL"}
+  "arrivalStationTimeZone": {"S": "America/Los_Angeles"},
+  "originalArrivalTime": {"S": "2022-05-18T20:29:40.131Z"}
+  "currentArrivalTime": {"S": "2022-05-18T20:43:29.487Z"}
+  "inboundStatus": {"S": "Delayed"}
+  "arrivalGate": {"S": "C17"}
+
+  "lastModifiedBy": {"S": ""}
+  "lastModifiedTime": {"S": "2022-04-22T15:24:29.882Z"}
+
+  "expiration_time": {"S": "1650412800"}
 }
 ITEM
 }
