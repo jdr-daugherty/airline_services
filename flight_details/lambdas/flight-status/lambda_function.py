@@ -9,12 +9,20 @@ import sys
 
 __all__ = []
 
-REQUIRED_PARAMS = {'departure_location', 'flight_number', 'departure_date'}
+REQUIRED_PARAMS = {'departure_code', 'flight_number', 'departure_date'}
 LOGGER = logging.getLogger()
 CLIENT = boto3.resource('dynamodb')
 TABLE = CLIENT.Table(os.getenv('DYNAMODB_TABLE'))
 
 
+# Lambda Test Event
+# {
+#   "pathParameters": {
+#       "departure_code": "MEM",
+#       "flight_number": "5420",
+#       "departure_date": "2022-05-18"
+#   }
+# }
 def lambda_handler(event, context):
     parameters = event['pathParameters']
 
@@ -61,7 +69,7 @@ def to_http_response(key: dict[str, str], dynamodb_response: dict[str, object]) 
 
 def to_key(parameters: dict[str, str]) -> dict[str, str]:
     # [Departure Code]_[Flight Number]_[Planned Departure Date Herb
-    dep_code = parameters['departure_location']
+    dep_code = parameters['departure_code']
     flight_number = parameters['flight_number']
     dep_date = parameters['departure_date']
 
