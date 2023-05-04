@@ -1,7 +1,7 @@
 locals {
   invoke_url      = aws_api_gateway_deployment.default_deployment.invoke_url
-  sample_flight_status = "flight-status?flight_number=5420&departure_location=MEM&departure_date=2022-05-18"
-  sample_Inbound_flight = "inbound-flight?tail=N1234&arrival_location=DAL&arrival_date=2023-02-15"
+  sample_flight_status = "flight-status?flight_number=5420&departure_code=MEM&departure_date=2022-05-18"
+  sample_inbound_flight = "inbound-flight?tail=N413WN&arrival_code=DAL&arrival_date=2022-05-18"
 }
 
 output "flight_status_table_name" {
@@ -27,6 +27,6 @@ output "gateway_url" {
 output "example_urls" {
   value = [
     "${local.invoke_url}/${local.sample_flight_status}",
-    "${local.invoke_url}/${local.sample_Inbound_flight}"
+    "${local.invoke_url}/${local.sample_inbound_flight}"
   ]
 }
