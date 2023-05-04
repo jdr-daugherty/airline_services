@@ -31,3 +31,42 @@ module "api_gateway_resource" {
   invoke_arn         = module.lambda_getter.invoke_arn
   path_part          = local.lambda_name
 }
+
+resource "aws_dynamodb_table_item" "inbound_flight_test_row" {
+  count = startswith(var.prefix, "rothe-mob-dev-") ? 1 : 0
+  table_name = module.table.name
+  hash_key   = module.table.hash_key
+
+  item = <<ITEM
+{
+  "key": {"S": "N413WN_DAL_2022-05-18"},
+
+  "createdBy": {"S": ""},
+  "createdTime": {"S": "2022-04-18T18:54:21.762Z"},
+
+  "number": {"S": "5420"},
+  "tailNumber": {"S": "N413WN"},
+
+  "departureDate": {"S": "2022-05-03"},
+
+  "departureStationCode": {"S": "MEM"},
+  "departureStationTimeZone": {"S": "America/Chicago"},
+  "originalArrivalTime": {"S": "2022-05-18T20:29:40.131Z"},
+  "currentDepartureTime": {"S": "2022-05-03T18:54:21.762Z"},
+  "outboundStatus": {"S": "On Time"},
+  "departureGate": {"S": "B3"},
+
+  "arrivalStationCode": {"S": "DAL"},
+  "arrivalStationTimeZone": {"S": "America/Los_Angeles"},
+  "originalArrivalTime": {"S": "2022-05-18T20:29:40.131Z"},
+  "currentArrivalTime": {"S": "2022-05-18T20:43:29.487Z"},
+  "inboundStatus": {"S": "Delayed"},
+  "arrivalGate": {"S": "C17"},
+
+  "lastModifiedBy": {"S": ""},
+  "lastModifiedTime": {"S": "2022-04-22T15:24:29.882Z"},
+
+  "expiration_time": {"S": "1650412800"}
+}
+ITEM
+}

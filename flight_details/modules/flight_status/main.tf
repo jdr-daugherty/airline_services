@@ -46,6 +46,7 @@ resource "aws_dynamodb_table_item" "flight_status_test_row" {
   "createdTime": {"S": "2022-04-18T18:54:21.762Z"},
 
   "number": {"S": "5420"},
+  "tailNumber": {"S": "N413WN"},
 
   "departureDate": {"S": "2022-05-03"},
 
@@ -65,6 +66,7 @@ resource "aws_dynamodb_table_item" "flight_status_test_row" {
 
   "lastModifiedBy": {"S": ""},
   "lastModifiedTime": {"S": "2022-04-22T15:24:29.882Z"},
+
 
   "expiration_time": {"S": "1650412800"}
 }
