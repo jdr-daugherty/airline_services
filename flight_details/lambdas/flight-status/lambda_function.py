@@ -28,7 +28,7 @@ def lambda_handler(event, context):
 
 def request_item(key: dict[str, str]) -> dict[str, object]:
     try:
-        return TABLE.get_item(key)
+        return TABLE.get_item(Key=key)
     except BotoCoreError or ClientError as error:
         logging.exception("Failed to retrieve flight details from DynamoDB: %s", key)
         raise error
