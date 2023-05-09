@@ -7,12 +7,15 @@ import signal
 import sys
 
 
-__all__ = []
-
 REQUIRED_PARAMS = {'departure_code', 'flight_number', 'departure_date'}
-LOGGER = logging.getLogger()
-CLIENT = boto3.resource('dynamodb')
-TABLE = CLIENT.Table(os.getenv('DYNAMODB_TABLE'))
+
+try:
+    LOGGER = logging.getLogger()
+    CLIENT = boto3.resource('dynamodb')
+    TABLE = CLIENT.Table(os.getenv('DYNAMODB_TABLE'))
+except Exception as ex:
+    LOGGER.exception("Failed to initialize lambda")
+    raise ex
 
 
 # Lambda Test Event
@@ -27,6 +30,7 @@ def lambda_handler(event, context):
     parameters = event['pathParameters']
 
     if not valid_parameters(parameters):
+        LOGGER.info("Invalid parameters: %s", str(parameters))
         return invalid_http_response()
 
     key = to_key(parameters)
@@ -38,17 +42,18 @@ def request_item(key: dict[str, str]) -> dict[str, object]:
     try:
         return TABLE.get_item(Key=key)
     except BotoCoreError or ClientError as error:
-        logging.exception("Failed to retrieve flight details from DynamoDB: %s", key)
+        LOGGER.exception("Failed to retrieve flight details from DynamoDB: %s", key)
         raise error
 
 
 def valid_parameters(parameters: dict[str, str]) -> bool:
-    return REQUIRED_PARAMS.issubset(parameters.keys())
+    return parameters is not None and REQUIRED_PARAMS.issubset(parameters.keys())
 
 
 def invalid_http_response() -> object:
     return {
-        "statusCode": 400
+        "statusCode": 400,
+        "body": "Invalid request parameters"
     }
 
 
