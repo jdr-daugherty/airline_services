@@ -34,7 +34,6 @@ module "api_gateway_resource" {
 
 
 resource "aws_dynamodb_table_item" "flight_status_test_row" {
-  count = startswith(var.prefix, "rothe-mob-dev-") ? 1 : 0
   table_name = module.table.name
   hash_key   = module.table.hash_key
 
