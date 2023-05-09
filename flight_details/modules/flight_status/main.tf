@@ -4,22 +4,39 @@ module "table" {
   table_name = local.lambda_name
 }
 
-module "lambda_getter" {
-  source                 = "../../../modules/lambda_getter"
-  execution_role_arn     = module.lambda_getter_role.arn
-  lambda_name            = local.lambda_name
-  prefix                 = var.prefix
-  rest_api_execution_arn = var.api_execution_arn
-  table_name             = module.table.name
-  source_path            = var.source_path
-  zip_path               = var.zip_path
-}
+module "lambda_function" {
+  source = "terraform-aws-modules/lambda/aws"
+  version = "~> 4.0"
+  publish = true
 
-module "lambda_getter_role" {
-  source      = "../../../modules/lambda_getter_role"
-  lambda_name = local.lambda_name
-  prefix      = var.prefix
-  table_arn   = module.table.arn
+  function_name = "${var.prefix}-${local.lambda_name}"
+  #  description   = "My awesome lambda function"
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.10"
+
+  source_path = "${var.source_path}/${local.lambda_name}/lambda_function.py"
+
+  environment_variables = {
+    DYNAMODB_TABLE = module.table.name
+  }
+
+  cloudwatch_logs_retention_in_days = 3
+
+  allowed_triggers = {
+    APIGatewayAny = {
+      service    = "apigateway"
+      source_arn = "${var.api_execution_arn}/*/*"
+    }
+  }
+
+  attach_policy_statements = true
+  policy_statements = {
+    dynamodb = {
+      effect    = "Allow",
+      actions   = ["dynamodb:BatchGetItem", "dynamodb:GetItem"],
+      resources = [module.table.arn]
+    }
+  }
 }
 
 module "api_gateway_resource" {
@@ -28,13 +45,12 @@ module "api_gateway_resource" {
   rest_api_id        = var.api_id
   parent_resource_id = var.api_parent_resource_id
   http_method        = "GET"
-  invoke_arn         = module.lambda_getter.invoke_arn
+  invoke_arn         = module.lambda_function.lambda_function_invoke_arn
   path_part          = local.lambda_name
 }
 
-
 resource "aws_dynamodb_table_item" "flight_status_test_row" {
-  count = contains(var.prefix, "-dev-") ? 1 : 0
+  count = length(regexall(".*-dev-.*", var.prefix)) > 0 ? 1 : 0
   table_name = module.table.name
   hash_key   = module.table.hash_key
 
@@ -72,4 +88,3 @@ resource "aws_dynamodb_table_item" "flight_status_test_row" {
 }
 ITEM
 }
-

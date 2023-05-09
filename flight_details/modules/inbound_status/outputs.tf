@@ -7,9 +7,9 @@ output "table_name" {
 }
 
 output "lambda_arn" {
-  value = module.lambda_getter.arn
+  value = module.lambda_function.lambda_function_arn
 }
 
 output "lambda_name" {
-  value = module.lambda_getter.name
+  value = module.lambda_function.lambda_function_name
 }
