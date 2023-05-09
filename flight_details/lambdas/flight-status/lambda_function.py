@@ -11,6 +11,7 @@ REQUIRED_PARAMS = {'departure_code', 'flight_number', 'departure_date'}
 
 try:
     LOGGER = logging.getLogger()
+    LOGGER.setLevel(logging.INFO)
     CLIENT = boto3.resource('dynamodb')
     TABLE = CLIENT.Table(os.getenv('DYNAMODB_TABLE'))
 except Exception as ex:
@@ -27,11 +28,15 @@ except Exception as ex:
 #   }
 # }
 def lambda_handler(event, context):
-    parameters = event['pathParameters']
+    if 'queryStringParameters' not in event:
+        LOGGER.info("Invalid parameters: %s", event)
+        return invalid_http_response(None)
+
+    parameters = event['queryStringParameters']
 
     if not valid_parameters(parameters):
         LOGGER.info("Invalid parameters: %s", str(parameters))
-        return invalid_http_response()
+        return invalid_http_response(parameters)
 
     key = to_key(parameters)
 
@@ -50,10 +55,10 @@ def valid_parameters(parameters: dict[str, str]) -> bool:
     return parameters is not None and REQUIRED_PARAMS.issubset(parameters.keys())
 
 
-def invalid_http_response() -> object:
+def invalid_http_response(parameters) -> object:
     return {
         "statusCode": 400,
-        "body": "Invalid request parameters"
+        "body": f"Invalid request parameters {str(parameters)}"
     }
 
 

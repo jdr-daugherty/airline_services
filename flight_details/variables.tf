@@ -5,11 +5,11 @@ variable "environment" {
 
 variable "namespace" {
   type    = string
-  default = "rothe-mob"
+  default = "rothe"
 }
 
 locals {
-  service_name = "flight-details"
+  service_name = "flight"
   prefix       = "${var.namespace}-${var.environment}-${local.service_name}"
 
   lambda_source_path = "${path.module}/lambdas"

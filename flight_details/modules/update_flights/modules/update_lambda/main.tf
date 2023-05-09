@@ -7,7 +7,7 @@ data "archive_file" "zip_file" {
 resource "aws_lambda_function" "function" {
   function_name = local.full_function_name
   role          = var.execution_role_arn
-  runtime       = "python3.9"
+  runtime       = "python3.10"
   handler       = "lambda_function.lambda_handler"
   filename      = local.zip_file_location
 }
