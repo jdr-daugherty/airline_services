@@ -13,7 +13,7 @@ module "flight_status" {
 }
 
 module "inbound_flight" {
-  source                 = "./modules/inbound_flight"
+  source                 = "./modules/inbound_status"
   api_execution_arn      = aws_api_gateway_rest_api.services_gateway.execution_arn
   api_id                 = aws_api_gateway_rest_api.services_gateway.id
   api_parent_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
