@@ -9,6 +9,7 @@ TODO:
   - Move lambda logic to a separate repositories
   - Switch "update flights" to standard lambda module
     - https://registry.terraform.io/modules/terraform-aws-modules/lambda/aws/latest
+  - Switch SQS to use terraform-aws-modules/sqs/aws
 - GitOps & CI/CD
   - Move modules into a separate repository
   - Setup "main" repository
