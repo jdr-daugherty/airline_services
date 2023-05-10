@@ -23,5 +23,5 @@ variable "api_execution_arn" {
 }
 
 locals {
-  lambda_name = "inbound-flight"
+  lambda_name = "by-departure"
 }
