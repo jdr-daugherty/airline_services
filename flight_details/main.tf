@@ -4,9 +4,9 @@ resource "aws_api_gateway_rest_api" "services_gateway" {
 
 module "requests" {
   source                 = "./modules/requests"
-  api_execution_arn      = aws_api_gateway_rest_api.services_gateway.execution_arn
-  api_id                 = aws_api_gateway_rest_api.services_gateway.id
-  api_parent_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
+  rest_api_execution_arn      = aws_api_gateway_rest_api.services_gateway.execution_arn
+  rest_api_id                 = aws_api_gateway_rest_api.services_gateway.id
+  rest_api_root_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
   prefix                 = local.prefix
   source_path            = local.lambda_source_path
   zip_path               = local.lambda_zip_path

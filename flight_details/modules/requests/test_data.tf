@@ -1,3 +1,7 @@
+resource "time_offset" "expiration_date" {
+  offset_days = 90
+}
+
 resource "aws_dynamodb_table_item" "departures_test_row" {
   count = length(regexall(".*-dev-.*", var.prefix)) > 0 ? 1 : 0
   table_name = module.departures_table.name
@@ -32,8 +36,7 @@ resource "aws_dynamodb_table_item" "departures_test_row" {
   "lastModifiedBy": {"S": ""},
   "lastModifiedTime": {"S": "2022-04-22T15:24:29.882Z"},
 
-
-  "expiration_time": {"S": "1650412800"}
+  "expiration_time": {"S": "${time_offset.expiration_date.unix}"}
 }
 ITEM
 }
@@ -72,7 +75,7 @@ resource "aws_dynamodb_table_item" "arrivals_test_row" {
   "lastModifiedBy": {"S": ""},
   "lastModifiedTime": {"S": "2022-04-22T15:24:29.882Z"},
 
-  "expiration_time": {"S": "1650412800"}
+  "expiration_time": {"S": "${time_offset.expiration_date.unix}"}
 }
 ITEM
 }

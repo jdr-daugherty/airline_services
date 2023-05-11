@@ -32,7 +32,7 @@ module "request_handler" {
   allowed_triggers = {
     APIGatewayAny = {
       service    = "apigateway"
-      source_arn = "${var.api_execution_arn}/*/*"
+      source_arn = "${var.rest_api_execution_arn}/*/*"
     }
   }
 
@@ -49,8 +49,8 @@ module "request_handler" {
 module "api_gateway_resource" {
   source = "../../../modules/lambda_api_gateway_resource"
 
-  rest_api_id        = var.api_id
-  parent_resource_id = var.api_parent_resource_id
+  rest_api_id        = var.rest_api_id
+  rest_api_root_resource_id = var.rest_api_root_resource_id
   http_method        = "GET"
   invoke_arn         = module.request_handler.lambda_function_invoke_arn
   parent_path       = "flights"

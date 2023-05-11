@@ -1,6 +1,6 @@
 resource "aws_api_gateway_resource" "context_resource" {
   rest_api_id = var.rest_api_id
-  parent_id   = var.parent_resource_id
+  parent_id   = var.rest_api_root_resource_id
   path_part   = var.parent_path
 }
 
