@@ -10,15 +10,15 @@ variable "prefix" {
   type = string
 }
 
-variable "api_id" {
+variable "rest_api_id" {
   type = string
 }
 
-variable "api_parent_resource_id" {
+variable "rest_api_root_resource_id" {
   type = string
 }
 
-variable "api_execution_arn" {
+variable "rest_api_execution_arn" {
   type = string
 }
 
