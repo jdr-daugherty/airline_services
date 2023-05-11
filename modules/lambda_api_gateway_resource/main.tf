@@ -1,6 +1,12 @@
-resource "aws_api_gateway_resource" "resource" {
+resource "aws_api_gateway_resource" "context_resource" {
   rest_api_id = var.rest_api_id
   parent_id   = var.parent_resource_id
+  path_part   = var.parent_path
+}
+
+resource "aws_api_gateway_resource" "resource" {
+  rest_api_id = var.rest_api_id
+  parent_id   = aws_api_gateway_resource.context_resource.id
   path_part   = var.path_part
 }
 

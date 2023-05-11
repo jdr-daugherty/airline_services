@@ -14,6 +14,10 @@ variable "http_method" {
   type = string
 }
 
+variable "parent_path" {
+  type = string
+}
+
 variable "path_part" {
   type = string
 }

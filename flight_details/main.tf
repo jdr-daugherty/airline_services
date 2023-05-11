@@ -2,18 +2,8 @@ resource "aws_api_gateway_rest_api" "services_gateway" {
   name = "${var.namespace}-${var.environment}-gateway"
 }
 
-module "by_departure" {
-  source                 = "./modules/by_departure"
-  api_execution_arn      = aws_api_gateway_rest_api.services_gateway.execution_arn
-  api_id                 = aws_api_gateway_rest_api.services_gateway.id
-  api_parent_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
-  prefix                 = local.prefix
-  source_path            = local.lambda_source_path
-  zip_path               = local.lambda_zip_path
-}
-
-module "by_arrival" {
-  source                 = "./modules/by_arrival"
+module "requests" {
+  source                 = "./modules/requests"
   api_execution_arn      = aws_api_gateway_rest_api.services_gateway.execution_arn
   api_id                 = aws_api_gateway_rest_api.services_gateway.id
   api_parent_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
@@ -23,7 +13,7 @@ module "by_arrival" {
 }
 
 resource "aws_api_gateway_deployment" "default_deployment" {
-  depends_on = [module.by_departure, module.by_arrival]
+  depends_on = [module.requests]
 
   rest_api_id = aws_api_gateway_rest_api.services_gateway.id
   stage_name  = "v1"

@@ -1,15 +1,15 @@
 variable "environment" {
   type    = string
-  default = "dev"
+  default = "dev-blue"
 }
 
 variable "namespace" {
   type    = string
-  default = "rothe"
+  default = "airline"
 }
 
 locals {
-  service_name = "flight"
+  service_name = "flights"
   prefix       = "${var.namespace}-${var.environment}-${local.service_name}"
 
   lambda_source_path = "${path.module}/lambdas"
