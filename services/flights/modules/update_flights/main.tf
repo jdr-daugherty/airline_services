@@ -1,5 +1,5 @@
 module "update_details_role" {
-  source = "./modules/update_lambda_role"
+  source = "modules/update_lambda_role"
 
   lambda_name    = local.lambda_name
   prefix         = var.prefix
@@ -8,7 +8,7 @@ module "update_details_role" {
 }
 
 module "update_details" {
-  source = "./modules/update_lambda"
+  source = "modules/update_lambda"
 
   execution_role_arn = module.update_details_role.arn
   lambda_name        = local.lambda_name

@@ -1,11 +1,11 @@
 module "arrivals_table" {
-  source     = "../../../modules/dynamodb_simple"
+  source     = "../../../../modules/dynamodb_simple"
   prefix     = var.prefix
   table_name = "by-arrival"
 }
 
 module "departures_table" {
-  source     = "../../../modules/dynamodb_simple"
+  source     = "../../../../modules/dynamodb_simple"
   prefix     = var.prefix
   table_name = "by-departure"
 }
@@ -47,7 +47,7 @@ module "request_handler" {
 }
 
 module "api_gateway_resource" {
-  source = "../../../modules/lambda_api_gateway_resource"
+  source = "../../../../modules/lambda_api_gateway_resource"
 
   rest_api_id        = var.rest_api_id
   rest_api_root_resource_id = var.rest_api_root_resource_id
