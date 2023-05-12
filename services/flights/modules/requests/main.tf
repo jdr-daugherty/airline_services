@@ -1,11 +1,11 @@
 module "arrivals_table" {
-  source     = "../../../modules/dynamodb_simple"
+  source     = "../../../../modules/dynamodb_simple"
   prefix     = var.prefix
   table_name = "by-arrival"
 }
 
 module "departures_table" {
-  source     = "../../../modules/dynamodb_simple"
+  source     = "../../../../modules/dynamodb_simple"
   prefix     = var.prefix
   table_name = "by-departure"
 }
@@ -17,10 +17,10 @@ module "request_handler" {
 
   function_name = "${var.prefix}-${local.lambda_name}"
   #  description   = "My awesome lambda function"
-  handler       = "lambda_function.lambda_handler"
+  handler       = "requests.lambda_handler"
   runtime       = "python3.10"
 
-  source_path = "${var.source_path}/${local.lambda_name}/lambda_function.py"
+  source_path = "${var.source_path}/requests.py"
 
   environment_variables = {
     ARRIVAL_TABLE = module.arrivals_table.name
@@ -47,7 +47,7 @@ module "request_handler" {
 }
 
 module "api_gateway_resource" {
-  source = "../../../modules/lambda_api_gateway_resource"
+  source = "../../../../modules/lambda_api_gateway_resource"
 
   rest_api_id        = var.rest_api_id
   rest_api_root_resource_id = var.rest_api_root_resource_id
