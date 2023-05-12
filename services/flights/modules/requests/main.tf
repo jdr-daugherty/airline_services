@@ -17,10 +17,10 @@ module "request_handler" {
 
   function_name = "${var.prefix}-${local.lambda_name}"
   #  description   = "My awesome lambda function"
-  handler       = "requests.lambda_handler"
+  handler       = "flight_requests.lambda_handler"
   runtime       = "python3.10"
 
-  source_path = "${var.source_path}/requests.py"
+  source_path = "${var.source_path}/flight_requests.py"
 
   environment_variables = {
     ARRIVAL_TABLE = module.arrivals_table.name
