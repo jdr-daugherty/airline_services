@@ -10,8 +10,6 @@ A collection of sample cloud-native serverless micro-services inspired by the ai
 - Flight Details
   - Convert into a module with examples
   - Move lambda logic to a separate repositories
-  - Switch "update flights" to standard lambda module
-    - https://registry.terraform.io/modules/terraform-aws-modules/lambda/aws/latest
   - Convert SQS queue to Kinesis
 - GitOps & CI/CD
   - Move modules into a separate repository
@@ -26,4 +24,4 @@ A collection of sample cloud-native serverless micro-services inspired by the ai
 - Authentication
   - OAuth
   - Lambda Authorizer
-- Condider rewriting lambdas using Golang
+- Rewrite lambdas in Golang
