@@ -28,7 +28,12 @@ module "flight_updater" {
   policy_statements = {
     dynamodb = {
       effect    = "Allow",
-      actions   = ["dynamodb:BatchPutItem", "dynamodb:PutItem", "dynamodb:UpdateItem"],
+      actions   = [
+        "dynamodb:BatchPutItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem"
+      ],
       resources = var.table_arn_list
     },
     sqs = {
