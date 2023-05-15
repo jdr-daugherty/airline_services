@@ -10,6 +10,14 @@ module "flights" {
   rest_api_execution_arn    = aws_api_gateway_rest_api.services_gateway.execution_arn
 }
 
+module "crew" {
+  source                    = "./services/crew"
+  service_prefix            = local.service_prefix
+  rest_api_id               = aws_api_gateway_rest_api.services_gateway.id
+  rest_api_root_resource_id = aws_api_gateway_rest_api.services_gateway.root_resource_id
+  rest_api_execution_arn    = aws_api_gateway_rest_api.services_gateway.execution_arn
+}
+
 resource "aws_api_gateway_deployment" "default_deployment" {
   depends_on = [module.flights]
 
