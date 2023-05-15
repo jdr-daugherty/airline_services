@@ -1,24 +1,24 @@
 module "flight_updater" {
-  source = "terraform-aws-modules/lambda/aws"
+  source  = "terraform-aws-modules/lambda/aws"
   version = "~> 4.0"
   publish = true
 
   function_name = "${var.prefix}-${local.lambda_name}"
   #  description   = "My awesome lambda function"
-  handler       = "flight_requests.lambda_handler"
-  runtime       = "python3.10"
+  handler = "flight_requests.lambda_handler"
+  runtime = "python3.10"
 
   source_path = "${var.source_path}/flight_updates.py"
 
   environment_variables = {
-    ARRIVAL_TABLE = var.arrivals_table_name
+    ARRIVAL_TABLE   = var.arrivals_table_name
     DEPARTURE_TABLE = var.departures_table_name
   }
 
   cloudwatch_logs_retention_in_days = 3
 
   allowed_triggers = {
-    EventBridgeInvoke= {
+    EventBridgeInvoke = {
       service    = "events"
       source_arn = var.sqs_queue_arn
     }

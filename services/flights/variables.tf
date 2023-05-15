@@ -15,10 +15,7 @@ variable "service_prefix" {
 }
 
 locals {
-  prefix = "${var.service_prefix}-flights"
-
-  lambda_source_path = "${path.module}/lambdas"
-  lambda_zip_path    = "${path.module}/lambdas/packages"
-
+  prefix               = "${var.service_prefix}-flights"
+  lambda_source_path   = "${path.module}/lambdas"
   update_queue_enabled = false
 }
