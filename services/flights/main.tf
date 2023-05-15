@@ -17,7 +17,6 @@ module "requests" {
   rest_api_root_resource_id = var.rest_api_root_resource_id
   prefix                    = local.prefix
   source_path               = local.lambda_source_path
-  zip_path                  = local.lambda_zip_path
 
   arrivals_table_name   = module.arrivals_table.name
   departures_table_name = module.departures_table.name
@@ -25,10 +24,10 @@ module "requests" {
 }
 
 module "updates" {
-  source                    = "./modules/updates"
-  prefix                    = local.prefix
-  source_path               = local.lambda_source_path
-  sqs_queue_arn = aws_sqs_queue.flight_details_relay_queue.arn
+  source                = "./modules/updates"
+  prefix                = local.prefix
+  source_path           = local.lambda_source_path
+  sqs_queue_arn         = aws_sqs_queue.flight_details_relay_queue.arn
   arrivals_table_name   = module.arrivals_table.name
   departures_table_name = module.departures_table.name
   table_arn_list        = [module.departures_table.arn, module.arrivals_table.arn]

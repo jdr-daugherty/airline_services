@@ -2,10 +2,6 @@ variable "source_path" {
   type = string
 }
 
-variable "zip_path" {
-  type = string
-}
-
 variable "prefix" {
   type = string
 }
