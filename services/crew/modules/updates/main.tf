@@ -28,7 +28,12 @@ module "update_lambda" {
   policy_statements = {
     dynamodb = {
       effect    = "Allow",
-      actions   = ["dynamodb:BatchPutItem", "dynamodb:PutItem", "dynamodb:UpdateItem"],
+      actions   = [
+        "dynamodb:BatchPutItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem"
+      ],
       resources = [var.table_arn]
     },
     sqs = {
