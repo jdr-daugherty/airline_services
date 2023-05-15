@@ -3,7 +3,7 @@ resource "time_offset" "expiration_date" {
 }
 
 resource "aws_dynamodb_table_item" "departures_test_row" {
-  count = length(regexall(".*-dev-.*", var.prefix)) > 0 ? 1 : 0
+  count = length(regexall(".*-dev-.*", local.prefix)) > 0 ? 1 : 0
   table_name = module.departures_table.name
   hash_key   = module.departures_table.hash_key
 
@@ -42,7 +42,7 @@ ITEM
 }
 
 resource "aws_dynamodb_table_item" "arrivals_test_row" {
-  count = length(regexall(".*-dev-.*", var.prefix)) > 0 ? 1 : 0
+  count = length(regexall(".*-dev-.*", local.prefix)) > 0 ? 1 : 0
   table_name = module.arrivals_table.name
   hash_key   = module.arrivals_table.hash_key
 

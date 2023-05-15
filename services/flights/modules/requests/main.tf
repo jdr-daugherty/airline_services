@@ -1,14 +1,3 @@
-module "arrivals_table" {
-  source     = "../../../../modules/dynamodb_simple"
-  prefix     = var.prefix
-  table_name = "by-arrival"
-}
-
-module "departures_table" {
-  source     = "../../../../modules/dynamodb_simple"
-  prefix     = var.prefix
-  table_name = "by-departure"
-}
 
 module "request_handler" {
   source = "terraform-aws-modules/lambda/aws"
@@ -17,14 +6,14 @@ module "request_handler" {
 
   function_name = "${var.prefix}-${local.lambda_name}"
   #  description   = "My awesome lambda function"
-  handler       = "requests.lambda_handler"
+  handler       = "flight_requests.lambda_handler"
   runtime       = "python3.10"
 
-  source_path = "${var.source_path}/requests.py"
+  source_path = "${var.source_path}/flight_requests.py"
 
   environment_variables = {
-    ARRIVAL_TABLE = module.arrivals_table.name
-    DEPARTURE_TABLE = module.departures_table.name
+    ARRIVAL_TABLE = var.arrivals_table_name
+    DEPARTURE_TABLE = var.departures_table_name
   }
 
   cloudwatch_logs_retention_in_days = 3
@@ -41,7 +30,7 @@ module "request_handler" {
     dynamodb = {
       effect    = "Allow",
       actions   = ["dynamodb:BatchGetItem", "dynamodb:GetItem"],
-      resources = [module.arrivals_table.arn, module.departures_table.arn]
+      resources = var.table_arn_list
     }
   }
 }
