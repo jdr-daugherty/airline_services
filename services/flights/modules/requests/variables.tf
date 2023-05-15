@@ -22,6 +22,18 @@ variable "rest_api_execution_arn" {
   type = string
 }
 
+variable "table_arn_list" {
+  type = list(string)
+}
+
+variable "departures_table_name" {
+  type = string
+}
+
+variable "arrivals_table_name" {
+  type = string
+}
+
 locals {
   lambda_name = "requests"
 }
