@@ -12,13 +12,12 @@ A collection of sample cloud-native serverless micro-services inspired by the ai
   - Move lambda logic to a separate repositories
   - Convert SQS queue to Kinesis
 - GitOps & CI/CD
+  - Setup pipeline infrastructure (Jenkins/CodeDeploy) using Separate Terraform
+  - Create separate environments: DEV/QA/PROD
+    - Setup tfvars for each environment
+    - Separate pipelines
+    - Trigger pipelines from Git branches (preferrably tags)
   - Move modules into a separate repository
-  - Setup "main" repository
-    - top level terraform
-    - tfvars for each environment
-  - Setup Jenkins using Terraform
-  - Create separate pipelines: DEV/QA/PROD
-  - Trigger pipelines from Git branches (preferrably tags)
 - Route 53 DNS
 - VPC, etc.
 - Authentication
