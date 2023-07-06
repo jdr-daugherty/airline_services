@@ -10,7 +10,9 @@ A collection of sample cloud-native serverless micro-services inspired by the ai
 - Flight Details
   - Convert into a module with examples
   - Move lambda logic to a separate repositories
-  - Convert SQS queue to Kinesis
+  - Convert SQS queue to Kinesis or Kafka
+- Crew Profile Service
+  - Add "by name" request using Fuzzy String Matching: https://github.com/seatgeek/thefuzz
 - GitOps & CI/CD
   - Setup pipeline infrastructure (Jenkins/CodeDeploy) using Separate Terraform
   - Create separate environments: DEV/QA/PROD
